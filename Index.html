@@ -1,0 +1,2700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSchedule Pro - Healthcare Appointment System</title>
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --border-radius: 6px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--secondary-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+        }
+
+        nav ul li a:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .auth-buttons button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            margin-left: 10px;
+        }
+
+        .auth-buttons button:hover {
+            background-color: #2980b9;
+        }
+
+        .auth-buttons button.outline {
+            background-color: transparent;
+            border: 1px solid white;
+        }
+
+        .auth-buttons button.outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            color: var(--dark-color);
+            text-decoration: none;
+            padding: 8px 10px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: var(--light-color);
+            color: var(--secondary-color);
+        }
+
+        .sidebar-menu i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-header h2 {
+            color: var(--primary-color);
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card i {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+
+        .stat-card h3 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        .stat-card p {
+            color: #7f8c8d;
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table th {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status.pending {
+            background-color: #fff4e5;
+            color: var(--warning-color);
+        }
+
+        .status.confirmed {
+            background-color: #e6f7ee;
+            color: var(--success-color);
+        }
+
+        .status.cancelled {
+            background-color: #feeceb;
+            color: var(--danger-color);
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            margin-right: 5px;
+        }
+
+        .action-btn.view {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .action-btn.edit {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .action-btn.delete {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        /* Form Styles */
+        .form-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-header h3 {
+            color: var(--primary-color);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        /* Calendar Styles */
+        .calendar {
+            margin-top: 20px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .calendar-nav button {
+            background-color: var(--light-color);
+            border: none;
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 600;
+            padding: 10px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+        }
+
+        .calendar-day {
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+            padding: 10px;
+            min-height: 100px;
+            position: relative;
+        }
+
+        .calendar-day.empty {
+            background-color: #f9f9f9;
+        }
+
+        .calendar-date {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .calendar-event {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-bottom: 3px;
+            cursor: pointer;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+            }
+
+            .auth-buttons {
+                margin-top: 15px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .align-center {
+            align-items: center;
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            color: white;
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background-color: var(--success-color);
+        }
+
+        .notification.error {
+            background-color: var(--danger-color);
+        }
+
+        .notification.warning {
+            background-color: var(--warning-color);
+        }
+
+        .notification i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        /* Tabs Styles */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .tab.active {
+            border-bottom-color: var(--secondary-color);
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Custom Select Styles */
+        .custom-select {
+            position: relative;
+        }
+
+        .custom-select select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .custom-select::after {
+            content: '\25BC';
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #7f8c8d;
+        }
+
+        /* Time Slot Picker */
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .time-slot {
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .time-slot:hover {
+            background-color: var(--light-color);
+        }
+
+        .time-slot.selected {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .time-slot.booked {
+            background-color: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">Medi<span>Schedule</span> Pro</a>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="#" data-section="appointments"><i class="fas fa-calendar-check"></i> Appointments</a></li>
+                    <li><a href="#" data-section="patients"><i class="fas fa-user-injured"></i> Patients</a></li>
+                    <li><a href="#" data-section="doctors"><i class="fas fa-user-md"></i> Doctors</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <button class="outline" id="login-btn">Login</button>
+                <button id="register-btn">Register</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <h3>Quick Actions</h3>
+                <ul class="sidebar-menu">
+                    <li><a href="#" data-action="new-appointment"><i class="fas fa-plus-circle"></i> New Appointment</a></li>
+                    <li><a href="#" data-action="new-patient"><i class="fas fa-user-plus"></i> Add Patient</a></li>
+                    <li><a href="#" data-action="new-doctor"><i class="fas fa-plus-square"></i> Add Doctor</a></li>
+                    <li><a href="#" data-action="calendar-view"><i class="fas fa-calendar-alt"></i> Calendar View</a></li>
+                </ul>
+
+                <h3 class="mt-20">Reports</h3>
+                <ul class="sidebar-menu">
+                    <li><a href="#" data-action="daily-report"><i class="fas fa-file-alt"></i> Daily Report</a></li>
+                    <li><a href="#" data-action="monthly-report"><i class="fas fa-chart-bar"></i> Monthly Analytics</a></li>
+                    <li><a href="#" data-action="financial-report"><i class="fas fa-money-bill-wave"></i> Financial Report</a></li>
+                </ul>
+            </aside>
+
+            <!-- Dashboard Content -->
+            <main class="dashboard" id="dashboard-content">
+                <div class="dashboard-header">
+                    <h2>Dashboard Overview</h2>
+                    <div class="d-flex">
+                        <div class="custom-select" style="width: 200px; margin-right: 10px;">
+                            <select id="time-period">
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="year">This Year</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary"><i class="fas fa-download"></i> Export</button>
+                    </div>
+                </div>
+
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3 id="total-appointments">0</h3>
+                        <p>Total Appointments</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-user-injured"></i>
+                        <h3 id="total-patients">0</h3>
+                        <p>Registered Patients</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-user-md"></i>
+                        <h3 id="total-doctors">0</h3>
+                        <p>Available Doctors</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-dollar-sign"></i>
+                        <h3 id="total-revenue">$0</h3>
+                        <p>Total Revenue</p>
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active" data-tab="upcoming">Upcoming Appointments</div>
+                    <div class="tab" data-tab="recent">Recent Patients</div>
+                    <div class="tab" data-tab="doctors">Doctor Availability</div>
+                </div>
+
+                <div class="tab-content active" id="upcoming-tab">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Doctor</th>
+                                <th>Date & Time</th>
+                                <th>Purpose</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="upcoming-appointments">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="tab-content" id="recent-tab">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Patient ID</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Gender</th>
+                                <th>Last Visit</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-patients">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="tab-content" id="doctors-tab">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Specialization</th>
+                                <th>Today's Schedule</th>
+                                <th>Availability</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="doctors-availability">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+
+            <!-- Appointments Content (hidden by default) -->
+            <main class="dashboard" id="appointments-content" style="display: none;">
+                <div class="dashboard-header justify-between">
+                    <h2>Appointment Management</h2>
+                    <button class="btn btn-primary" id="new-appointment-btn"><i class="fas fa-plus"></i> New Appointment</button>
+                </div>
+
+                <div class="form-container mb-20">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appointment-search">Search Appointments</label>
+                            <input type="text" id="appointment-search" class="form-control" placeholder="Search by patient, doctor, or date...">
+                        </div>
+                        <div class="form-group">
+                            <label for="appointment-filter">Filter By Status</label>
+                            <div class="custom-select">
+                                <select id="appointment-filter">
+                                    <option value="all">All Appointments</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="confirmed">Confirmed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Appointment ID</th>
+                            <th>Patient</th>
+                            <th>Doctor</th>
+                            <th>Date & Time</th>
+                            <th>Purpose</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="all-appointments">
+                        <!-- Dynamically populated -->
+                    </tbody>
+                </table>
+            </main>
+
+            <!-- Patients Content (hidden by default) -->
+            <main class="dashboard" id="patients-content" style="display: none;">
+                <div class="dashboard-header justify-between">
+                    <h2>Patient Management</h2>
+                    <button class="btn btn-primary" id="new-patient-btn"><i class="fas fa-plus"></i> Add Patient</button>
+                </div>
+
+                <div class="form-container mb-20">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="patient-search">Search Patients</label>
+                            <input type="text" id="patient-search" class="form-control" placeholder="Search by name, ID, or phone...">
+                        </div>
+                        <div class="form-group">
+                            <label for="patient-filter">Filter By</label>
+                            <div class="custom-select">
+                                <select id="patient-filter">
+                                    <option value="all">All Patients</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                    <option value="insurance">With Insurance</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Patient ID</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Phone</th>
+                            <th>Last Visit</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="all-patients">
+                        <!-- Dynamically populated -->
+                    </tbody>
+                </table>
+            </main>
+
+            <!-- Doctors Content (hidden by default) -->
+            <main class="dashboard" id="doctors-content" style="display: none;">
+                <div class="dashboard-header justify-between">
+                    <h2>Doctor Management</h2>
+                    <button class="btn btn-primary" id="new-doctor-btn"><i class="fas fa-plus"></i> Add Doctor</button>
+                </div>
+
+                <div class="form-container mb-20">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="doctor-search">Search Doctors</label>
+                            <input type="text" id="doctor-search" class="form-control" placeholder="Search by name, specialty, or department...">
+                        </div>
+                        <div class="form-group">
+                            <label for="doctor-filter">Filter By</label>
+                            <div class="custom-select">
+                                <select id="doctor-filter">
+                                    <option value="all">All Doctors</option>
+                                    <option value="active">Active</option>
+                                    <option value="onleave">On Leave</option>
+                                    <option value="specialty">By Specialty</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Doctor ID</th>
+                            <th>Name</th>
+                            <th>Specialization</th>
+                            <th>Department</th>
+                            <th>Contact</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="all-doctors">
+                        <!-- Dynamically populated -->
+                    </tbody>
+                </table>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Login to Your Account</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" class="form-control" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="Enter your password">
+                </div>
+                <div class="form-group d-flex justify-between align-center">
+                    <div>
+                        <input type="checkbox" id="remember-me">
+                        <label for="remember-me">Remember me</label>
+                    </div>
+                    <a href="#" style="color: var(--secondary-color);">Forgot password?</a>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" id="login-submit">Login</button>
+                <p class="text-center mt-20">Don't have an account? <a href="#" id="show-register" style="color: var(--secondary-color);">Register here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="register-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Account</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="register-firstname">First Name</label>
+                        <input type="text" id="register-firstname" class="form-control" placeholder="Enter first name">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-lastname">Last Name</label>
+                        <input type="text" id="register-lastname" class="form-control" placeholder="Enter last name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email Address</label>
+                    <input type="email" id="register-email" class="form-control" placeholder="Enter your email">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" class="form-control" placeholder="Create password">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm">Confirm Password</label>
+                        <input type="password" id="register-confirm" class="form-control" placeholder="Confirm password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="register-role">Account Type</label>
+                    <div class="custom-select">
+                        <select id="register-role">
+                            <option value="admin">Administrator</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="receptionist">Receptionist</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="agree-terms">
+                    <label for="agree-terms">I agree to the <a href="#" style="color: var(--secondary-color);">Terms and Conditions</a></label>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" id="register-submit">Create Account</button>
+                <p class="text-center mt-20">Already have an account? <a href="#" id="show-login" style="color: var(--secondary-color);">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Appointment Modal -->
+    <div class="modal" id="appointment-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Schedule New Appointment</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="appointment-patient">Patient</label>
+                        <div class="custom-select">
+                            <select id="appointment-patient">
+                                <option value="">Select Patient</option>
+                                <!-- Dynamically populated -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="appointment-doctor">Doctor</label>
+                        <div class="custom-select">
+                            <select id="appointment-doctor">
+                                <option value="">Select Doctor</option>
+                                <!-- Dynamically populated -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="appointment-date">Date</label>
+                        <input type="date" id="appointment-date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="appointment-time">Time Slot</label>
+                        <div class="custom-select">
+                            <select id="appointment-time">
+                                <option value="">Select Time Slot</option>
+                                <!-- Dynamically populated -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="appointment-purpose">Purpose</label>
+                    <div class="custom-select">
+                        <select id="appointment-purpose">
+                            <option value="consultation">Consultation</option>
+                            <option value="followup">Follow-up</option>
+                            <option value="checkup">Routine Checkup</option>
+                            <option value="test">Diagnostic Test</option>
+                            <option value="procedure">Medical Procedure</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="appointment-notes">Notes</label>
+                    <textarea id="appointment-notes" class="form-control" rows="3" placeholder="Any additional notes..."></textarea>
+                </div>
+                <div class="form-group d-flex justify-between">
+                    <button class="btn btn-secondary" id="cancel-appointment">Cancel</button>
+                    <button class="btn btn-primary" id="save-appointment">Schedule Appointment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Patient Modal -->
+    <div class="modal" id="patient-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Patient</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="patient-firstname">First Name</label>
+                        <input type="text" id="patient-firstname" class="form-control" placeholder="First name">
+                    </div>
+                    <div class="form-group">
+                        <label for="patient-lastname">Last Name</label>
+                        <input type="text" id="patient-lastname" class="form-control" placeholder="Last name">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="patient-dob">Date of Birth</label>
+                        <input type="date" id="patient-dob" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="patient-gender">Gender</label>
+                        <div class="custom-select">
+                            <select id="patient-gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                                <option value="unknown">Prefer not to say</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="patient-email">Email</label>
+                        <input type="email" id="patient-email" class="form-control" placeholder="Email address">
+                    </div>
+                    <div class="form-group">
+                        <label for="patient-phone">Phone</label>
+                        <input type="tel" id="patient-phone" class="form-control" placeholder="Phone number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="patient-address">Address</label>
+                    <input type="text" id="patient-address" class="form-control" placeholder="Street address">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="patient-city">City</label>
+                        <input type="text" id="patient-city" class="form-control" placeholder="City">
+                    </div>
+                    <div class="form-group">
+                        <label for="patient-state">State</label>
+                        <input type="text" id="patient-state" class="form-control" placeholder="State">
+                    </div>
+                    <div class="form-group">
+                        <label for="patient-zip">ZIP Code</label>
+                        <input type="text" id="patient-zip" class="form-control" placeholder="ZIP code">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="patient-insurance">Insurance Provider</label>
+                        <input type="text" id="patient-insurance" class="form-control" placeholder="Insurance company">
+                    </div>
+                    <div class="form-group">
+                        <label for="patient-policy">Policy Number</label>
+                        <input type="text" id="patient-policy" class="form-control" placeholder="Policy number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="patient-medical-history">Medical History</label>
+                    <textarea id="patient-medical-history" class="form-control" rows="3" placeholder="Any known medical conditions, allergies, etc."></textarea>
+                </div>
+                <div class="form-group d-flex justify-between">
+                    <button class="btn btn-secondary" id="cancel-patient">Cancel</button>
+                    <button class="btn btn-primary" id="save-patient">Save Patient</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Doctor Modal -->
+    <div class="modal" id="doctor-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Doctor</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="doctor-firstname">First Name</label>
+                        <input type="text" id="doctor-firstname" class="form-control" placeholder="First name">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctor-lastname">Last Name</label>
+                        <input type="text" id="doctor-lastname" class="form-control" placeholder="Last name">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="doctor-specialization">Specialization</label>
+                        <div class="custom-select">
+                            <select id="doctor-specialization">
+                                <option value="cardiology">Cardiology</option>
+                                <option value="neurology">Neurology</option>
+                                <option value="orthopedics">Orthopedics</option>
+                                <option value="pediatrics">Pediatrics</option>
+                                <option value="dermatology">Dermatology</option>
+                                <option value="oncology">Oncology</option>
+                                <option value="gynecology">Gynecology</option>
+                                <option value="general">General Medicine</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctor-department">Department</label>
+                        <input type="text" id="doctor-department" class="form-control" placeholder="Department">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="doctor-email">Email</label>
+                        <input type="email" id="doctor-email" class="form-control" placeholder="Email address">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctor-phone">Phone</label>
+                        <input type="tel" id="doctor-phone" class="form-control" placeholder="Phone number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="doctor-qualification">Qualifications</label>
+                    <textarea id="doctor-qualification" class="form-control" rows="2" placeholder="Medical degrees, certifications, etc."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="doctor-schedule">Weekly Schedule</label>
+                    <div class="time-slots" id="doctor-schedule">
+                        <div class="time-slot" data-day="monday">Monday</div>
+                        <div class="time-slot" data-day="tuesday">Tuesday</div>
+                        <div class="time-slot" data-day="wednesday">Wednesday</div>
+                        <div class="time-slot" data-day="thursday">Thursday</div>
+                        <div class="time-slot" data-day="friday">Friday</div>
+                        <div class="time-slot" data-day="saturday">Saturday</div>
+                        <div class="time-slot" data-day="sunday">Sunday</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="doctor-status">Status</label>
+                    <div class="custom-select">
+                        <select id="doctor-status">
+                            <option value="active">Active</option>
+                            <option value="onleave">On Leave</option>
+                            <option value="vacation">On Vacation</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group d-flex justify-between">
+                    <button class="btn btn-secondary" id="cancel-doctor">Cancel</button>
+                    <button class="btn btn-primary" id="save-doctor">Save Doctor</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Appointment Modal -->
+    <div class="modal" id="view-appointment-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Appointment Details</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Appointment ID</label>
+                        <p class="form-control-static" id="view-appointment-id">APT-1001</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <p class="form-control-static"><span class="status confirmed" id="view-appointment-status">Confirmed</span></p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Patient</label>
+                        <p class="form-control-static" id="view-appointment-patient">John Doe</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Doctor</label>
+                        <p class="form-control-static" id="view-appointment-doctor">Dr. Sarah Smith</p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <p class="form-control-static" id="view-appointment-date">June 15, 2023</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Time</label>
+                        <p class="form-control-static" id="view-appointment-time">10:30 AM</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Purpose</label>
+                    <p class="form-control-static" id="view-appointment-purpose">Routine Checkup</p>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <p class="form-control-static" id="view-appointment-notes">Patient requested morning appointment if possible. Has allergy to penicillin.</p>
+                </div>
+                <div class="form-group">
+                    <label>Created On</label>
+                    <p class="form-control-static" id="view-appointment-created">June 10, 2023 at 2:45 PM</p>
+                </div>
+                <div class="form-group d-flex justify-between">
+                    <button class="btn btn-secondary" id="close-view-appointment">Close</button>
+                    <div>
+                        <button class="btn btn-primary" id="edit-appointment">Edit</button>
+                        <button class="btn btn-danger" id="cancel-view-appointment">Cancel Appointment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Patient Modal -->
+    <div class="modal" id="view-patient-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Patient Details</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Patient ID</label>
+                        <p class="form-control-static" id="view-patient-id">PT-1001</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <p class="form-control-static"><span class="status confirmed">Active</span></p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <p class="form-control-static" id="view-patient-name">John Doe</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <p class="form-control-static" id="view-patient-dob">January 15, 1985 (38 years)</p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <p class="form-control-static" id="view-patient-gender">Male</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Blood Type</label>
+                        <p class="form-control-static" id="view-patient-blood">O+</p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <p class="form-control-static" id="view-patient-email">john.doe@example.com</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <p class="form-control-static" id="view-patient-phone">(555) 123-4567</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <p class="form-control-static" id="view-patient-address">123 Main St, Apt 4B, New York, NY 10001</p>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Insurance Provider</label>
+                        <p class="form-control-static" id="view-patient-insurance">Blue Cross Blue Shield</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Policy Number</label>
+                        <p class="form-control-static" id="view-patient-policy">BCBS123456789</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Medical History</label>
+                    <p class="form-control-static" id="view-patient-history">Allergy to penicillin. History of asthma. No major surgeries.</p>
+                </div>
+                <div class="form-group">
+                    <label>Last Visit</label>
+                    <p class="form-control-static" id="view-patient-lastvisit">June 10, 2023</p>
+                </div>
+                <div class="form-group d-flex justify-between">
+                    <button class="btn btn-secondary" id="close-view-patient">Close</button>
+                    <div>
+                        <button class="btn btn-primary" id="edit-patient">Edit</button>
+                        <button class="btn btn-danger" id="deactivate-patient">Deactivate</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Doctor Modal -->
+    <div class="modal" id="view-doctor-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Doctor Details</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Doctor ID</label>
+                        <p class="form-control-static" id="view-doctor-id">DR-1001</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <p class="form-control-static"><span class="status confirmed" id="view-doctor-status">Active</span></p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <p class="form-control-static" id="view-doctor-name">Dr. Sarah Smith</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Specialization</label>
+                        <p class="form-control-static" id="view-doctor-specialization">Cardiology</p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Department</label>
+                        <p class="form-control-static" id="view-doctor-department">Cardiology</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Years of Experience</label>
+                        <p class="form-control-static" id="view-doctor-experience">12 years</p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <p class="form-control-static" id="view-doctor-email">sarah.smith@hospital.com</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <p class="form-control-static" id="view-doctor-phone">(555) 987-6543</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Qualifications</label>
+                    <p class="form-control-static" id="view-doctor-qualification">MD, PhD in Cardiology, Board Certified</p>
+                </div>
+                <div class="form-group">
+                    <label>Weekly Schedule</label>
+                    <p class="form-control-static" id="view-doctor-schedule">Monday, Wednesday, Friday: 9AM - 5PM</p>
+                </div>
+                <div class="form-group">
+                    <label>Upcoming Appointments</label>
+                    <p class="form-control-static" id="view-doctor-appointments">5 appointments scheduled for today</p>
+                </div>
+                <div class="form-group d-flex justify-between">
+                    <button class="btn btn-secondary" id="close-view-doctor">Close</button>
+                    <div>
+                        <button class="btn btn-primary" id="edit-doctor">Edit</button>
+                        <button class="btn btn-danger" id="deactivate-doctor">Deactivate</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar View Modal -->
+    <div class="modal" id="calendar-modal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3>Calendar View</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="form-container">
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <h3 id="calendar-month-year">June 2023</h3>
+                        <div class="calendar-nav">
+                            <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                            <button id="today-btn">Today</button>
+                            <button id="next-month"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="calendar-grid" id="calendar-grid">
+                        <div class="calendar-day-header">Sun</div>
+                        <div class="calendar-day-header">Mon</div>
+                        <div class="calendar-day-header">Tue</div>
+                        <div class="calendar-day-header">Wed</div>
+                        <div class="calendar-day-header">Thu</div>
+                        <div class="calendar-day-header">Fri</div>
+                        <div class="calendar-day-header">Sat</div>
+                        <!-- Calendar days will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-message">Operation completed successfully!</span>
+    </div>
+
+    <script>
+        // Application State
+        const state = {
+            currentUser: null,
+            patients: [
+                {
+                    id: 'PT-1001',
+                    firstName: 'John',
+                    lastName: 'Doe',
+                    dob: '1985-01-15',
+                    gender: 'male',
+                    email: 'john.doe@example.com',
+                    phone: '5551234567',
+                    address: '123 Main St, Apt 4B',
+                    city: 'New York',
+                    state: 'NY',
+                    zip: '10001',
+                    insuranceProvider: 'Blue Cross Blue Shield',
+                    policyNumber: 'BCBS123456789',
+                    medicalHistory: 'Allergy to penicillin. History of asthma. No major surgeries.',
+                    lastVisit: '2023-06-10',
+                    status: 'active'
+                },
+                {
+                    id: 'PT-1002',
+                    firstName: 'Jane',
+                    lastName: 'Smith',
+                    dob: '1990-05-22',
+                    gender: 'female',
+                    email: 'jane.smith@example.com',
+                    phone: '5559876543',
+                    address: '456 Oak Ave',
+                    city: 'Boston',
+                    state: 'MA',
+                    zip: '02108',
+                    insuranceProvider: 'Aetna',
+                    policyNumber: 'AET789012345',
+                    medicalHistory: 'None',
+                    lastVisit: '2023-06-12',
+                    status: 'active'
+                },
+                {
+                    id: 'PT-1003',
+                    firstName: 'Robert',
+                    lastName: 'Johnson',
+                    dob: '1978-11-30',
+                    gender: 'male',
+                    email: 'robert.j@example.com',
+                    phone: '5554567890',
+                    address: '789 Pine Rd',
+                    city: 'Chicago',
+                    state: 'IL',
+                    zip: '60601',
+                    insuranceProvider: 'Medicare',
+                    policyNumber: 'MCARE456789',
+                    medicalHistory: 'Type 2 diabetes, hypertension',
+                    lastVisit: '2023-05-28',
+                    status: 'active'
+                }
+            ],
+            doctors: [
+                {
+                    id: 'DR-1001',
+                    firstName: 'Sarah',
+                    lastName: 'Smith',
+                    specialization: 'cardiology',
+                    department: 'Cardiology',
+                    email: 'sarah.smith@hospital.com',
+                    phone: '5559876543',
+                    qualifications: 'MD, PhD in Cardiology, Board Certified',
+                    schedule: ['monday', 'wednesday', 'friday'],
+                    status: 'active',
+                    experience: 12
+                },
+                {
+                    id: 'DR-1002',
+                    firstName: 'Michael',
+                    lastName: 'Brown',
+                    specialization: 'neurology',
+                    department: 'Neurology',
+                    email: 'michael.b@hospital.com',
+                    phone: '5551239876',
+                    qualifications: 'MD, Neurology Specialist',
+                    schedule: ['tuesday', 'thursday', 'saturday'],
+                    status: 'active',
+                    experience: 8
+                },
+                {
+                    id: 'DR-1003',
+                    firstName: 'Emily',
+                    lastName: 'Davis',
+                    specialization: 'pediatrics',
+                    department: 'Pediatrics',
+                    email: 'emily.d@hospital.com',
+                    phone: '5557891234',
+                    qualifications: 'MD, Pediatric Medicine',
+                    schedule: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+                    status: 'active',
+                    experience: 5
+                }
+            ],
+            appointments: [
+                {
+                    id: 'APT-1001',
+                    patientId: 'PT-1001',
+                    doctorId: 'DR-1001',
+                    date: '2023-06-15',
+                    time: '10:30',
+                    purpose: 'checkup',
+                    notes: 'Patient requested morning appointment if possible. Has allergy to penicillin.',
+                    status: 'confirmed',
+                    createdAt: '2023-06-10T14:45:00'
+                },
+                {
+                    id: 'APT-1002',
+                    patientId: 'PT-1002',
+                    doctorId: 'DR-1002',
+                    date: '2023-06-16',
+                    time: '14:00',
+                    purpose: 'consultation',
+                    notes: 'Follow-up on previous neurological exam',
+                    status: 'confirmed',
+                    createdAt: '2023-06-12T09:15:00'
+                },
+                {
+                    id: 'APT-1003',
+                    patientId: 'PT-1003',
+                    doctorId: 'DR-1003',
+                    date: '2023-06-14',
+                    time: '11:15',
+                    purpose: 'followup',
+                    notes: 'Diabetes management checkup',
+                    status: 'completed',
+                    createdAt: '2023-05-28T16:30:00'
+                },
+                {
+                    id: 'APT-1004',
+                    patientId: 'PT-1001',
+                    doctorId: 'DR-1002',
+                    date: '2023-06-20',
+                    time: '09:00',
+                    purpose: 'test',
+                    notes: 'MRI scan scheduled',
+                    status: 'pending',
+                    createdAt: '2023-06-10T14:50:00'
+                }
+            ],
+            timeSlots: [
+                '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+                '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
+                '16:00', '16:30', '17:00'
+            ],
+            currentView: 'dashboard',
+            currentTab: 'upcoming'
+        };
+
+        // DOM Elements
+        const elements = {
+            // Main sections
+            dashboardContent: document.getElementById('dashboard-content'),
+            appointmentsContent: document.getElementById('appointments-content'),
+            patientsContent: document.getElementById('patients-content'),
+            doctorsContent: document.getElementById('doctors-content'),
+
+            // Dashboard elements
+            totalAppointments: document.getElementById('total-appointments'),
+            totalPatients: document.getElementById('total-patients'),
+            totalDoctors: document.getElementById('total-doctors'),
+            totalRevenue: document.getElementById('total-revenue'),
+            upcomingAppointments: document.getElementById('upcoming-appointments'),
+            recentPatients: document.getElementById('recent-patients'),
+            doctorsAvailability: document.getElementById('doctors-availability'),
+            timePeriod: document.getElementById('time-period'),
+
+            // Appointments elements
+            allAppointments: document.getElementById('all-appointments'),
+            appointmentSearch: document.getElementById('appointment-search'),
+            appointmentFilter: document.getElementById('appointment-filter'),
+            newAppointmentBtn: document.getElementById('new-appointment-btn'),
+
+            // Patients elements
+            allPatients: document.getElementById('all-patients'),
+            patientSearch: document.getElementById('patient-search'),
+            patientFilter: document.getElementById('patient-filter'),
+            newPatientBtn: document.getElementById('new-patient-btn'),
+
+            // Doctors elements
+            allDoctors: document.getElementById('all-doctors'),
+            doctorSearch: document.getElementById('doctor-search'),
+            doctorFilter: document.getElementById('doctor-filter'),
+            newDoctorBtn: document.getElementById('new-doctor-btn'),
+
+            // Modals
+            loginModal: document.getElementById('login-modal'),
+            registerModal: document.getElementById('register-modal'),
+            appointmentModal: document.getElementById('appointment-modal'),
+            patientModal: document.getElementById('patient-modal'),
+            doctorModal: document.getElementById('doctor-modal'),
+            viewAppointmentModal: document.getElementById('view-appointment-modal'),
+            viewPatientModal: document.getElementById('view-patient-modal'),
+            viewDoctorModal: document.getElementById('view-doctor-modal'),
+            calendarModal: document.getElementById('calendar-modal'),
+
+            // Notification
+            notification: document.getElementById('notification'),
+            notificationMessage: document.getElementById('notification-message'),
+
+            // Tabs
+            tabs: document.querySelectorAll('.tab'),
+            tabContents: document.querySelectorAll('.tab-content')
+        };
+
+        // Utility Functions
+        const utils = {
+            formatDate: (dateString) => {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                return new Date(dateString).toLocaleDateString(undefined, options);
+            },
+
+            formatTime: (timeString) => {
+                const [hours, minutes] = timeString.split(':');
+                const hour = parseInt(hours);
+                const period = hour >= 12 ? 'PM' : 'AM';
+                const displayHour = hour > 12 ? hour - 12 : hour;
+                return `${displayHour}:${minutes} ${period}`;
+            },
+
+            formatDateTime: (dateString, timeString) => {
+                return `${utils.formatDate(dateString)} at ${utils.formatTime(timeString)}`;
+            },
+
+            calculateAge: (dob) => {
+                const birthDate = new Date(dob);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                return age;
+            },
+
+            showNotification: (message, type = 'success') => {
+                elements.notification.className = `notification ${type} show`;
+                elements.notificationMessage.textContent = message;
+                setTimeout(() => {
+                    elements.notification.classList.remove('show');
+                }, 3000);
+            },
+
+            generateId: (prefix) => {
+                return `${prefix}-${Math.floor(1000 + Math.random() * 9000)}`;
+            },
+
+            getDoctorById: (id) => {
+                return state.doctors.find(doctor => doctor.id === id);
+            },
+
+            getPatientById: (id) => {
+                return state.patients.find(patient => patient.id === id);
+            },
+
+            getAppointmentById: (id) => {
+                return state.appointments.find(appointment => appointment.id === id);
+            },
+
+            getAppointmentsByPatient: (patientId) => {
+                return state.appointments.filter(appointment => appointment.patientId === patientId);
+            },
+
+            getAppointmentsByDoctor: (doctorId) => {
+                return state.appointments.filter(appointment => appointment.doctorId === doctorId);
+            },
+
+            getAvailableTimeSlots: (doctorId, date) => {
+                const doctor = utils.getDoctorById(doctorId);
+                if (!doctor) return [];
+                
+                const day = new Date(date).toLocaleString('en-us', { weekday: 'long' }).toLowerCase();
+                if (!doctor.schedule.includes(day)) return [];
+                
+                const existingAppointments = state.appointments.filter(
+                    app => app.doctorId === doctorId && app.date === date && app.status !== 'cancelled'
+                );
+                
+                const bookedSlots = existingAppointments.map(app => app.time);
+                return state.timeSlots.filter(slot => !bookedSlots.includes(slot));
+            }
+        };
+
+        // UI Rendering Functions
+        const render = {
+            dashboardStats: () => {
+                elements.totalAppointments.textContent = state.appointments.length;
+                elements.totalPatients.textContent = state.patients.length;
+                elements.totalDoctors.textContent = state.doctors.length;
+                
+                // Calculate revenue (simplified for demo)
+                const revenue = state.appointments
+                    .filter(app => app.status === 'completed')
+                    .reduce((sum, app) => sum + 150, 0); // $150 per appointment
+                elements.totalRevenue.textContent = `$${revenue}`;
+            },
+
+            upcomingAppointments: () => {
+                const today = new Date().toISOString().split('T')[0];
+                const upcoming = state.appointments
+                    .filter(app => app.date >= today && app.status !== 'cancelled' && app.status !== 'completed')
+                    .sort((a, b) => {
+                        if (a.date === b.date) {
+                            return a.time.localeCompare(b.time);
+                        }
+                        return a.date.localeCompare(b.date);
+                    })
+                    .slice(0, 5);
+                
+                elements.upcomingAppointments.innerHTML = upcoming.map(app => {
+                    const patient = utils.getPatientById(app.patientId);
+                    const doctor = utils.getDoctorById(app.doctorId);
+                    
+                    return `
+                        <tr>
+                            <td>${patient.firstName} ${patient.lastName}</td>
+                            <td>Dr. ${doctor.lastName}</td>
+                            <td>${utils.formatDate(app.date)}, ${utils.formatTime(app.time)}</td>
+                            <td>${app.purpose.charAt(0).toUpperCase() + app.purpose.slice(1)}</td>
+                            <td><span class="status ${app.status}">${app.status.charAt(0).toUpperCase() + app.status.slice(1)}</span></td>
+                            <td>
+                                <button class="action-btn view" data-id="${app.id}">View</button>
+                                <button class="action-btn edit" data-id="${app.id}">Edit</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            },
+
+            recentPatients: () => {
+                const recent = [...state.patients]
+                    .sort((a, b) => new Date(b.lastVisit) - new Date(a.lastVisit))
+                    .slice(0, 5);
+                
+                elements.recentPatients.innerHTML = recent.map(patient => {
+                    return `
+                        <tr>
+                            <td>${patient.id}</td>
+                            <td>${patient.firstName} ${patient.lastName}</td>
+                            <td>${utils.calculateAge(patient.dob)}</td>
+                            <td>${patient.gender.charAt(0).toUpperCase() + patient.gender.slice(1)}</td>
+                            <td>${utils.formatDate(patient.lastVisit)}</td>
+                            <td>
+                                <button class="action-btn view" data-id="${patient.id}">View</button>
+                                <button class="action-btn edit" data-id="${patient.id}">Edit</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            },
+
+            doctorsAvailability: () => {
+                const today = new Date().toISOString().split('T')[0];
+                const dayName = new Date().toLocaleString('en-us', { weekday: 'long' }).toLowerCase();
+                
+                elements.doctorsAvailability.innerHTML = state.doctors.map(doctor => {
+                    const isAvailable = doctor.schedule.includes(dayName);
+                    const todaysAppointments = state.appointments.filter(
+                        app => app.doctorId === doctor.id && app.date === today && app.status !== 'cancelled'
+                    ).length;
+                    
+                    return `
+                        <tr>
+                            <td>Dr. ${doctor.firstName} ${doctor.lastName}</td>
+                            <td>${doctor.specialization.charAt(0).toUpperCase() + doctor.specialization.slice(1)}</td>
+                            <td>${todaysAppointments} appointments</td>
+                            <td><span class="status ${isAvailable ? 'confirmed' : 'cancelled'}">${isAvailable ? 'Available' : 'Not Available'}</span></td>
+                            <td>
+                                <button class="action-btn view" data-id="${doctor.id}">View</button>
+                                <button class="action-btn edit" data-id="${doctor.id}">Edit</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            },
+
+            allAppointments: () => {
+                elements.allAppointments.innerHTML = state.appointments.map(app => {
+                    const patient = utils.getPatientById(app.patientId);
+                    const doctor = utils.getDoctorById(app.doctorId);
+                    
+                    return `
+                        <tr>
+                            <td>${app.id}</td>
+                            <td>${patient.firstName} ${patient.lastName}</td>
+                            <td>Dr. ${doctor.lastName}</td>
+                            <td>${utils.formatDate(app.date)}, ${utils.formatTime(app.time)}</td>
+                            <td>${app.purpose.charAt(0).toUpperCase() + app.purpose.slice(1)}</td>
+                            <td><span class="status ${app.status}">${app.status.charAt(0).toUpperCase() + app.status.slice(1)}</span></td>
+                            <td>
+                                <button class="action-btn view" data-id="${app.id}">View</button>
+                                <button class="action-btn edit" data-id="${app.id}">Edit</button>
+                                <button class="action-btn delete" data-id="${app.id}">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            },
+
+            allPatients: () => {
+                elements.allPatients.innerHTML = state.patients.map(patient => {
+                    return `
+                        <tr>
+                            <td>${patient.id}</td>
+                            <td>${patient.firstName} ${patient.lastName}</td>
+                            <td>${utils.calculateAge(patient.dob)}</td>
+                            <td>${patient.gender.charAt(0).toUpperCase() + patient.gender.slice(1)}</td>
+                            <td>${patient.phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')}</td>
+                            <td>${utils.formatDate(patient.lastVisit)}</td>
+                            <td>
+                                <button class="action-btn view" data-id="${patient.id}">View</button>
+                                <button class="action-btn edit" data-id="${patient.id}">Edit</button>
+                                <button class="action-btn delete" data-id="${patient.id}">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            },
+
+            allDoctors: () => {
+                elements.allDoctors.innerHTML = state.doctors.map(doctor => {
+                    return `
+                        <tr>
+                            <td>${doctor.id}</td>
+                            <td>Dr. ${doctor.firstName} ${doctor.lastName}</td>
+                            <td>${doctor.specialization.charAt(0).toUpperCase() + doctor.specialization.slice(1)}</td>
+                            <td>${doctor.department}</td>
+                            <td>${doctor.phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')}</td>
+                            <td><span class="status ${doctor.status}">${doctor.status.charAt(0).toUpperCase() + doctor.status.slice(1)}</span></td>
+                            <td>
+                                <button class="action-btn view" data-id="${doctor.id}">View</button>
+                                <button class="action-btn edit" data-id="${doctor.id}">Edit</button>
+                                <button class="action-btn delete" data-id="${doctor.id}">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            },
+
+            patientDropdown: () => {
+                const dropdown = document.getElementById('appointment-patient');
+                dropdown.innerHTML = '<option value="">Select Patient</option>' + 
+                    state.patients.map(patient => 
+                        `<option value="${patient.id}">${patient.firstName} ${patient.lastName} (${patient.id})</option>`
+                    ).join('');
+            },
+
+            doctorDropdown: () => {
+                const dropdown = document.getElementById('appointment-doctor');
+                dropdown.innerHTML = '<option value="">Select Doctor</option>' + 
+                    state.doctors.map(doctor => 
+                        `<option value="${doctor.id}">Dr. ${doctor.lastName} (${doctor.specialization})</option>`
+                    ).join('');
+            },
+
+            timeSlotDropdown: (doctorId, date) => {
+                const dropdown = document.getElementById('appointment-time');
+                const slots = utils.getAvailableTimeSlots(doctorId, date);
+                
+                dropdown.innerHTML = '<option value="">Select Time Slot</option>' + 
+                    slots.map(slot => `<option value="${slot}">${utils.formatTime(slot)}</option>`).join('');
+            },
+
+            viewAppointment: (appointmentId) => {
+                const appointment = utils.getAppointmentById(appointmentId);
+                if (!appointment) return;
+                
+                const patient = utils.getPatientById(appointment.patientId);
+                const doctor = utils.getDoctorById(appointment.doctorId);
+                
+                document.getElementById('view-appointment-id').textContent = appointment.id;
+                document.getElementById('view-appointment-status').textContent = appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1);
+                document.getElementById('view-appointment-status').className = `status ${appointment.status}`;
+                document.getElementById('view-appointment-patient').textContent = `${patient.firstName} ${patient.lastName}`;
+                document.getElementById('view-appointment-doctor').textContent = `Dr. ${doctor.firstName} ${doctor.lastName}`;
+                document.getElementById('view-appointment-date').textContent = utils.formatDate(appointment.date);
+                document.getElementById('view-appointment-time').textContent = utils.formatTime(appointment.time);
+                document.getElementById('view-appointment-purpose').textContent = appointment.purpose.charAt(0).toUpperCase() + appointment.purpose.slice(1);
+                document.getElementById('view-appointment-notes').textContent = appointment.notes || 'None';
+                document.getElementById('view-appointment-created').textContent = utils.formatDateTime(appointment.createdAt.split('T')[0], appointment.createdAt.split('T')[1].substring(0, 5));
+                
+                // Set data-id for edit and cancel buttons
+                document.getElementById('edit-appointment').setAttribute('data-id', appointmentId);
+                document.getElementById('cancel-view-appointment').setAttribute('data-id', appointmentId);
+                
+                // Show modal
+                elements.viewAppointmentModal.style.display = 'flex';
+            },
+
+            viewPatient: (patientId) => {
+                const patient = utils.getPatientById(patientId);
+                if (!patient) return;
+                
+                document.getElementById('view-patient-id').textContent = patient.id;
+                document.getElementById('view-patient-name').textContent = `${patient.firstName} ${patient.lastName}`;
+                document.getElementById('view-patient-dob').textContent = `${utils.formatDate(patient.dob)} (${utils.calculateAge(patient.dob)} years)`;
+                document.getElementById('view-patient-gender').textContent = patient.gender.charAt(0).toUpperCase() + patient.gender.slice(1);
+                document.getElementById('view-patient-email').textContent = patient.email;
+                document.getElementById('view-patient-phone').textContent = `(${patient.phone.substring(0, 3)}) ${patient.phone.substring(3, 6)}-${patient.phone.substring(6)}`;
+                document.getElementById('view-patient-address').textContent = `${patient.address}, ${patient.city}, ${patient.state} ${patient.zip}`;
+                document.getElementById('view-patient-insurance').textContent = patient.insuranceProvider;
+                document.getElementById('view-patient-policy').textContent = patient.policyNumber;
+                document.getElementById('view-patient-history').textContent = patient.medicalHistory || 'None';
+                document.getElementById('view-patient-lastvisit').textContent = utils.formatDate(patient.lastVisit);
+                
+                // Blood type (random for demo)
+                document.getElementById('view-patient-blood').textContent = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'][Math.floor(Math.random() * 8)];
+                
+                // Set data-id for edit and deactivate buttons
+                document.getElementById('edit-patient').setAttribute('data-id', patientId);
+                document.getElementById('deactivate-patient').setAttribute('data-id', patientId);
+                
+                // Show modal
+                elements.viewPatientModal.style.display = 'flex';
+            },
+
+            viewDoctor: (doctorId) => {
+                const doctor = utils.getDoctorById(doctorId);
+                if (!doctor) return;
+                
+                document.getElementById('view-doctor-id').textContent = doctor.id;
+                document.getElementById('view-doctor-name').textContent = `Dr. ${doctor.firstName} ${doctor.lastName}`;
+                document.getElementById('view-doctor-specialization').textContent = doctor.specialization.charAt(0).toUpperCase() + doctor.specialization.slice(1);
+                document.getElementById('view-doctor-department').textContent = doctor.department;
+                document.getElementById('view-doctor-experience').textContent = `${doctor.experience} years`;
+                document.getElementById('view-doctor-email').textContent = doctor.email;
+                document.getElementById('view-doctor-phone').textContent = `(${doctor.phone.substring(0, 3)}) ${doctor.phone.substring(3, 6)}-${doctor.phone.substring(6)}`;
+                document.getElementById('view-doctor-qualification').textContent = doctor.qualifications;
+                
+                // Format schedule
+                const scheduleText = doctor.schedule.map(day => 
+                    day.charAt(0).toUpperCase() + day.slice(1)
+                ).join(', ');
+                document.getElementById('view-doctor-schedule').textContent = scheduleText + ': 9AM - 5PM';
+                
+                // Count upcoming appointments
+                const today = new Date().toISOString().split('T')[0];
+                const upcomingCount = state.appointments.filter(
+                    app => app.doctorId === doctor.id && app.date >= today && app.status !== 'cancelled'
+                ).length;
+                document.getElementById('view-doctor-appointments').textContent = `${upcomingCount} upcoming appointments`;
+                
+                // Set status
+                document.getElementById('view-doctor-status').textContent = doctor.status.charAt(0).toUpperCase() + doctor.status.slice(1);
+                document.getElementById('view-doctor-status').className = `status ${doctor.status === 'active' ? 'confirmed' : 'cancelled'}`;
+                
+                // Set data-id for edit and deactivate buttons
+                document.getElementById('edit-doctor').setAttribute('data-id', doctorId);
+                document.getElementById('deactivate-doctor').setAttribute('data-id', doctorId);
+                
+                // Show modal
+                elements.viewDoctorModal.style.display = 'flex';
+            },
+
+            calendar: (year, month) => {
+                const calendarGrid = document.getElementById('calendar-grid');
+                const monthYearDisplay = document.getElementById('calendar-month-year');
+                
+                // Clear existing day headers (keep the first 7)
+                while (calendarGrid.children.length > 7) {
+                    calendarGrid.removeChild(calendarGrid.lastChild);
+                }
+                
+                const date = new Date(year, month, 1);
+                monthYearDisplay.textContent = date.toLocaleString('default', { month: 'long', year: 'numeric' });
+                
+                // Get first day of month (0-6, where 0 is Sunday)
+                const firstDay = date.getDay();
+                
+                // Get days in month
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                
+                // Create empty slots for days before the first day of the month
+                for (let i = 0; i < firstDay; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.className = 'calendar-day empty';
+                    calendarGrid.appendChild(emptyDay);
+                }
+                
+                // Create days of the month
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day';
+                    
+                    const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const dayAppointments = state.appointments.filter(app => app.date === dateString);
+                    
+                    dayElement.innerHTML = `
+                        <div class="calendar-date">${day}</div>
+                        ${dayAppointments.map(app => {
+                            const patient = utils.getPatientById(app.patientId);
+                            return `<div class="calendar-event">${utils.formatTime(app.time)} - ${patient.firstName}</div>`;
+                        }).join('')}
+                    `;
+                    
+                    calendarGrid.appendChild(dayElement);
+                }
+            }
+        };
+
+        // Event Handlers
+        const handlers = {
+            init: () => {
+                // Set current date for calendar
+                const today = new Date();
+                state.currentYear = today.getFullYear();
+                state.currentMonth = today.getMonth();
+                
+                // Render initial data
+                render.dashboardStats();
+                render.upcomingAppointments();
+                render.recentPatients();
+                render.doctorsAvailability();
+                render.allAppointments();
+                render.allPatients();
+                render.allDoctors();
+                render.patientDropdown();
+                render.doctorDropdown();
+                
+                // Set up tab switching
+                elements.tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        // Remove active class from all tabs and contents
+                        elements.tabs.forEach(t => t.classList.remove('active'));
+                        elements.tabContents.forEach(c => c.classList.remove('active'));
+                        
+                        // Add active class to clicked tab and corresponding content
+                        tab.classList.add('active');
+                        const tabId = tab.getAttribute('data-tab');
+                        document.getElementById(`${tabId}-tab`).classList.add('active');
+                    });
+                });
+                
+                // Set up section switching
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const section = link.getAttribute('data-section');
+                        handlers.switchSection(section);
+                        
+                        // Update active nav link
+                        document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+                        link.classList.add('active');
+                    });
+                });
+                
+                // Set up quick action links
+                document.querySelectorAll('[data-action]').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const action = link.getAttribute('data-action');
+                        
+                        switch (action) {
+                            case 'new-appointment':
+                                elements.appointmentModal.style.display = 'flex';
+                                break;
+                            case 'new-patient':
+                                elements.patientModal.style.display = 'flex';
+                                break;
+                            case 'new-doctor':
+                                elements.doctorModal.style.display = 'flex';
+                                break;
+                            case 'calendar-view':
+                                render.calendar(state.currentYear, state.currentMonth);
+                                elements.calendarModal.style.display = 'flex';
+                                break;
+                            default:
+                                break;
+                        }
+                    });
+                });
+                
+                // Set up modal close buttons
+                document.querySelectorAll('.close-modal').forEach(button => {
+                    button.addEventListener('click', () => {
+                        button.closest('.modal').style.display = 'none';
+                    });
+                });
+                
+                // Set up login/register buttons
+                document.getElementById('login-btn').addEventListener('click', () => {
+                    elements.loginModal.style.display = 'flex';
+                });
+                
+                document.getElementById('register-btn').addEventListener('click', () => {
+                    elements.registerModal.style.display = 'flex';
+                });
+                
+                document.getElementById('show-register').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    elements.loginModal.style.display = 'none';
+                    elements.registerModal.style.display = 'flex';
+                });
+                
+                document.getElementById('show-login').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    elements.registerModal.style.display = 'none';
+                    elements.loginModal.style.display = 'flex';
+                });
+                
+                // Set up form submissions
+                document.getElementById('login-submit').addEventListener('click', handlers.login);
+                document.getElementById('register-submit').addEventListener('click', handlers.register);
+                
+                // Set up new appointment button
+                elements.newAppointmentBtn.addEventListener('click', () => {
+                    elements.appointmentModal.style.display = 'flex';
+                });
+                
+                // Set up new patient button
+                elements.newPatientBtn.addEventListener('click', () => {
+                    elements.patientModal.style.display = 'flex';
+                });
+                
+                // Set up new doctor button
+                elements.newDoctorBtn.addEventListener('click', () => {
+                    elements.doctorModal.style.display = 'flex';
+                });
+                
+                // Set up appointment doctor change handler
+                document.getElementById('appointment-doctor').addEventListener('change', (e) => {
+                    const doctorId = e.target.value;
+                    const date = document.getElementById('appointment-date').value;
+                    if (doctorId && date) {
+                        render.timeSlotDropdown(doctorId, date);
+                    }
+                });
+                
+                // Set up appointment date change handler
+                document.getElementById('appointment-date').addEventListener('change', (e) => {
+                    const date = e.target.value;
+                    const doctorId = document.getElementById('appointment-doctor').value;
+                    if (doctorId && date) {
+                        render.timeSlotDropdown(doctorId, date);
+                    }
+                });
+                
+                // Set up save appointment button
+                document.getElementById('save-appointment').addEventListener('click', handlers.saveAppointment);
+                
+                // Set up save patient button
+                document.getElementById('save-patient').addEventListener('click', handlers.savePatient);
+                
+                // Set up save doctor button
+                document.getElementById('save-doctor').addEventListener('click', handlers.saveDoctor);
+                
+                // Set up cancel buttons
+                document.getElementById('cancel-appointment').addEventListener('click', () => {
+                    elements.appointmentModal.style.display = 'none';
+                });
+                
+                document.getElementById('cancel-patient').addEventListener('click', () => {
+                    elements.patientModal.style.display = 'none';
+                });
+                
+                document.getElementById('cancel-doctor').addEventListener('click', () => {
+                    elements.doctorModal.style.display = 'none';
+                });
+                
+                // Set up calendar navigation
+                document.getElementById('prev-month').addEventListener('click', () => {
+                    state.currentMonth--;
+                    if (state.currentMonth < 0) {
+                        state.currentMonth = 11;
+                        state.currentYear--;
+                    }
+                    render.calendar(state.currentYear, state.currentMonth);
+                });
+                
+                document.getElementById('next-month').addEventListener('click', () => {
+                    state.currentMonth++;
+                    if (state.currentMonth > 11) {
+                        state.currentMonth = 0;
+                        state.currentYear++;
+                    }
+                    render.calendar(state.currentYear, state.currentMonth);
+                });
+                
+                document.getElementById('today-btn').addEventListener('click', () => {
+                    const today = new Date();
+                    state.currentYear = today.getFullYear();
+                    state.currentMonth = today.getMonth();
+                    render.calendar(state.currentYear, state.currentMonth);
+                });
+                
+                // Set up view/edit/delete buttons (delegated events)
+                document.addEventListener('click', (e) => {
+                    // View buttons
+                    if (e.target.classList.contains('view') && e.target.hasAttribute('data-id')) {
+                        const id = e.target.getAttribute('data-id');
+                        if (id.startsWith('APT')) {
+                            render.viewAppointment(id);
+                        } else if (id.startsWith('PT')) {
+                            render.viewPatient(id);
+                        } else if (id.startsWith('DR')) {
+                            render.viewDoctor(id);
+                        }
+                    }
+                    
+                    // Edit buttons
+                    if (e.target.classList.contains('edit') && e.target.hasAttribute('data-id')) {
+                        const id = e.target.getAttribute('data-id');
+                        if (id.startsWith('APT')) {
+                            // For demo, just show the view modal
+                            render.viewAppointment(id);
+                        } else if (id.startsWith('PT')) {
+                            // For demo, just show the view modal
+                            render.viewPatient(id);
+                        } else if (id.startsWith('DR')) {
+                            // For demo, just show the view modal
+                            render.viewDoctor(id);
+                        }
+                    }
+                    
+                    // Delete buttons
+                    if (e.target.classList.contains('delete') && e.target.hasAttribute('data-id')) {
+                        const id = e.target.getAttribute('data-id');
+                        if (confirm('Are you sure you want to delete this record?')) {
+                            if (id.startsWith('APT')) {
+                                state.appointments = state.appointments.filter(app => app.id !== id);
+                                render.allAppointments();
+                                render.upcomingAppointments();
+                                utils.showNotification('Appointment deleted successfully');
+                            } else if (id.startsWith('PT')) {
+                                state.patients = state.patients.filter(patient => patient.id !== id);
+                                render.allPatients();
+                                render.recentPatients();
+                                utils.showNotification('Patient deleted successfully');
+                            } else if (id.startsWith('DR')) {
+                                state.doctors = state.doctors.filter(doctor => doctor.id !== id);
+                                render.allDoctors();
+                                render.doctorsAvailability();
+                                utils.showNotification('Doctor deleted successfully');
+                            }
+                        }
+                    }
+                });
+                
+                // Set up view modal close buttons
+                document.getElementById('close-view-appointment').addEventListener('click', () => {
+                    elements.viewAppointmentModal.style.display = 'none';
+                });
+                
+                document.getElementById('close-view-patient').addEventListener('click', () => {
+                    elements.viewPatientModal.style.display = 'none';
+                });
+                
+                document.getElementById('close-view-doctor').addEventListener('click', () => {
+                    elements.viewDoctorModal.style.display = 'none';
+                });
+                
+                // Set up cancel appointment button
+                document.getElementById('cancel-view-appointment').addEventListener('click', (e) => {
+                    const appointmentId = e.target.getAttribute('data-id');
+                    const appointment = utils.getAppointmentById(appointmentId);
+                    if (appointment) {
+                        appointment.status = 'cancelled';
+                        render.allAppointments();
+                        render.upcomingAppointments();
+                        render.viewAppointment(appointmentId);
+                        utils.showNotification('Appointment cancelled successfully');
+                    }
+                });
+                
+                // Set up deactivate patient button
+                document.getElementById('deactivate-patient').addEventListener('click', (e) => {
+                    const patientId = e.target.getAttribute('data-id');
+                    const patient = utils.getPatientById(patientId);
+                    if (patient) {
+                        patient.status = patient.status === 'active' ? 'inactive' : 'active';
+                        render.allPatients();
+                        render.recentPatients();
+                        render.viewPatient(patientId);
+                        utils.showNotification(`Patient ${patient.status === 'active' ? 'activated' : 'deactivated'} successfully`);
+                    }
+                });
+                
+                // Set up deactivate doctor button
+                document.getElementById('deactivate-doctor').addEventListener('click', (e) => {
+                    const doctorId = e.target.getAttribute('data-id');
+                    const doctor = utils.getDoctorById(doctorId);
+                    if (doctor) {
+                        doctor.status = doctor.status === 'active' ? 'onleave' : 'active';
+                        render.allDoctors();
+                        render.doctorsAvailability();
+                        render.viewDoctor(doctorId);
+                        utils.showNotification(`Doctor ${doctor.status === 'active' ? 'activated' : 'deactivated'} successfully`);
+                    }
+                });
+                
+                // Set up time slot selection for doctor schedule
+                document.getElementById('doctor-schedule').addEventListener('click', (e) => {
+                    if (e.target.classList.contains('time-slot')) {
+                        e.target.classList.toggle('selected');
+                    }
+                });
+            },
+            
+            switchSection: (section) => {
+                // Hide all sections
+                elements.dashboardContent.style.display = 'none';
+                elements.appointmentsContent.style.display = 'none';
+                elements.patientsContent.style.display = 'none';
+                elements.doctorsContent.style.display = 'none';
+                
+                // Show selected section
+                document.getElementById(`${section}-content`).style.display = 'block';
+                state.currentView = section;
+            },
+            
+            login: () => {
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                if (!email || !password) {
+                    utils.showNotification('Please enter both email and password', 'error');
+                    return;
+                }
+                
+                // Simulate login (in a real app, this would be an API call)
+                setTimeout(() => {
+                    state.currentUser = {
+                        email,
+                        role: 'admin'
+                    };
+                    
+                    elements.loginModal.style.display = 'none';
+                    utils.showNotification('Login successful');
+                    
+                    // Update UI for logged in user
+                    document.getElementById('login-btn').textContent = 'Logout';
+                    document.getElementById('register-btn').style.display = 'none';
+                    
+                    // Remove login event and add logout
+                    document.getElementById('login-btn').removeEventListener('click', () => {
+                        elements.loginModal.style.display = 'flex';
+                    });
+                    
+                    document.getElementById('login-btn').addEventListener('click', () => {
+                        state.currentUser = null;
+                        document.getElementById('login-btn').textContent = 'Login';
+                        document.getElementById('register-btn').style.display = 'block';
+                        utils.showNotification('Logout successful');
+                    });
+                }, 500);
+            },
+            
+            register: () => {
+                const firstName = document.getElementById('register-firstname').value;
+                const lastName = document.getElementById('register-lastname').value;
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                const confirmPassword = document.getElementById('register-confirm').value;
+                const role = document.getElementById('register-role').value;
+                const agreeTerms = document.getElementById('agree-terms').checked;
+                
+                if (!firstName || !lastName || !email || !password || !confirmPassword) {
+                    utils.showNotification('Please fill in all required fields', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    utils.showNotification('Passwords do not match', 'error');
+                    return;
+                }
+                
+                if (!agreeTerms) {
+                    utils.showNotification('You must agree to the terms and conditions', 'error');
+                    return;
+                }
+                
+                // Simulate registration (in a real app, this would be an API call)
+                setTimeout(() => {
+                    elements.registerModal.style.display = 'none';
+                    utils.showNotification('Registration successful. Please login.');
+                    elements.loginModal.style.display = 'flex';
+                }, 500);
+            },
+            
+            saveAppointment: () => {
+                const patientId = document.getElementById('appointment-patient').value;
+                const doctorId = document.getElementById('appointment-doctor').value;
+                const date = document.getElementById('appointment-date').value;
+                const time = document.getElementById('appointment-time').value;
+                const purpose = document.getElementById('appointment-purpose').value;
+                const notes = document.getElementById('appointment-notes').value;
+                
+                if (!patientId || !doctorId || !date || !time || !purpose) {
+                    utils.showNotification('Please fill in all required fields', 'error');
+                    return;
+                }
+                
+                // Create new appointment
+                const newAppointment = {
+                    id: utils.generateId('APT'),
+                    patientId,
+                    doctorId,
+                    date,
+                    time,
+                    purpose,
+                    notes,
+                    status: 'confirmed',
+                    createdAt: new Date().toISOString()
+                };
+                
+                state.appointments.push(newAppointment);
+                
+                // Update patient's last visit
+                const patient = utils.getPatientById(patientId);
+                if (patient) {
+                    patient.lastVisit = date;
+                }
+                
+                // Update UI
+                render.allAppointments();
+                render.upcomingAppointments();
+                render.recentPatients();
+                
+                // Close modal and show success message
+                elements.appointmentModal.style.display = 'none';
+                utils.showNotification('Appointment scheduled successfully');
+                
+                // Reset form
+                document.getElementById('appointment-patient').value = '';
+                document.getElementById('appointment-doctor').value = '';
+                document.getElementById('appointment-date').value = '';
+                document.getElementById('appointment-time').innerHTML = '<option value="">Select Time Slot</option>';
+                document.getElementById('appointment-purpose').value = 'consultation';
+                document.getElementById('appointment-notes').value = '';
+            },
+            
+            savePatient: () => {
+                const firstName = document.getElementById('patient-firstname').value;
+                const lastName = document.getElementById('patient-lastname').value;
+                const dob = document.getElementById('patient-dob').value;
+                const gender = document.getElementById('patient-gender').value;
+                const email = document.getElementById('patient-email').value;
+                const phone = document.getElementById('patient-phone').value;
+                const address = document.getElementById('patient-address').value;
+                const city = document.getElementById('patient-city').value;
+                const stateVal = document.getElementById('patient-state').value;
+                const zip = document.getElementById('patient-zip').value;
+                const insuranceProvider = document.getElementById('patient-insurance').value;
+                const policyNumber = document.getElementById('patient-policy').value;
+                const medicalHistory = document.getElementById('patient-medical-history').value;
+                
+                if (!firstName || !lastName || !dob || !gender || !phone) {
+                    utils.showNotification('Please fill in all required fields', 'error');
+                    return;
+                }
+                
+                // Create new patient
+                const newPatient = {
+                    id: utils.generateId('PT'),
+                    firstName,
+                    lastName,
+                    dob,
+                    gender,
+                    email,
+                    phone: phone.replace(/\D/g, ''),
+                    address,
+                    city,
+                    state: stateVal,
+                    zip,
+                    insuranceProvider,
+                    policyNumber,
+                    medicalHistory,
+                    lastVisit: new Date().toISOString().split('T')[0],
+                    status: 'active'
+                };
+                
+                state.patients.push(newPatient);
+                
+                // Update UI
+                render.allPatients();
+                render.recentPatients();
+                render.patientDropdown();
+                
+                // Close modal and show success message
+                elements.patientModal.style.display = 'none';
+                utils.showNotification('Patient added successfully');
+                
+                // Reset form
+                document.getElementById('patient-firstname').value = '';
+                document.getElementById('patient-lastname').value = '';
+                document.getElementById('patient-dob').value = '';
+                document.getElementById('patient-gender').value = 'male';
+                document.getElementById('patient-email').value = '';
+                document.getElementById('patient-phone').value = '';
+                document.getElementById('patient-address').value = '';
+                document.getElementById('patient-city').value = '';
+                document.getElementById('patient-state').value = '';
+                document.getElementById('patient-zip').value = '';
+                document.getElementById('patient-insurance').value = '';
+                document.getElementById('patient-policy').value = '';
+                document.getElementById('patient-medical-history').value = '';
+            },
+            
+            saveDoctor: () => {
+                const firstName = document.getElementById('doctor-firstname').value;
+                const lastName = document.getElementById('doctor-lastname').value;
+                const specialization = document.getElementById('doctor-specialization').value;
+                const department = document.getElementById('doctor-department').value;
+                const email = document.getElementById('doctor-email').value;
+                const phone = document.getElementById('doctor-phone').value;
+                const qualifications = document.getElementById('doctor-qualification').value;
+                const status = document.getElementById('doctor-status').value;
+                
+                if (!firstName || !lastName || !specialization || !department || !phone) {
+                    utils.showNotification('Please fill in all required fields', 'error');
+                    return;
+                }
+                
+                // Get selected schedule days
+                const schedule = [];
+                document.querySelectorAll('#doctor-schedule .selected').forEach(day => {
+                    schedule.push(day.getAttribute('data-day'));
+                });
+                
+                // Create new doctor
+                const newDoctor = {
+                    id: utils.generateId('DR'),
+                    firstName,
+                    lastName,
+                    specialization,
+                    department,
+                    email,
+                    phone: phone.replace(/\D/g, ''),
+                    qualifications,
+                    schedule,
+                    status,
+                    experience: Math.floor(Math.random() * 20) + 1 // Random experience for demo
+                };
+                
+                state.doctors.push(newDoctor);
+                
+                // Update UI
+                render.allDoctors();
+                render.doctorsAvailability();
+                render.doctorDropdown();
+                
+                // Close modal and show success message
+                elements.doctorModal.style.display = 'none';
+                utils.showNotification('Doctor added successfully');
+                
+                // Reset form
+                document.getElementById('doctor-firstname').value = '';
+                document.getElementById('doctor-lastname').value = '';
+                document.getElementById('doctor-specialization').value = 'cardiology';
+                document.getElementById('doctor-department').value = '';
+                document.getElementById('doctor-email').value = '';
+                document.getElementById('doctor-phone').value = '';
+                document.getElementById('doctor-qualification').value = '';
+                document.getElementById('doctor-status').value = 'active';
+                document.querySelectorAll('#doctor-schedule .selected').forEach(day => {
+                    day.classList.remove('selected');
+                });
+            }
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', handlers.init);
+    </script>
+</body>
+</html>
